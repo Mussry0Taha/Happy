@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> Ruby </title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffe6f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      transition: background 1s;
+    }
+    #message {
+      font-size: 24px;
+      margin: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      background-color: #ff5c8a;
+      color: white;
+      border-radius: 8px;
+    }
+    input {
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+ <audio id="bgMusic" loop>
+  <source src="Calum Scott - You Are The Reason (Official Video).m4a" type="audio/mpeg">
+</audio>
+
+  <div id="message">What's your name?</div>
+  <input type="text" id="nameInput" placeholder="Enter your name">
+  <br>
+  <button onclick="checkName()">Submit</button>
+
+  <script>
+    const steps = [
+      "I want you",
+      "Now we can do this the easy way",
+      "Or we can do it the hard way",
+      "The choice is yours",
+      "What's it gonna be, Ruby?"
+    ];
+
+    let currentStep = 0;
+    let isRealRuby = false;
+    let extraStepAfterNo = false;
+
+    function checkName() {
+      const name = document.getElementById("nameInput").value.trim();
+      const messageDiv = document.getElementById("message");
+      const input = document.getElementById("nameInput");
+      const button = document.querySelector("button");
+      document.getElementById("bgMusic").play();
+
+
+      input.style.display = "none";
+
+      if (name.toLowerCase() !== "ruby") {
+        isRealRuby = false;
+        messageDiv.textContent = "I prefer Ruby actually.";
+        button.textContent = "OK";
+        button.onclick = () => {
+          messageDiv.textContent = "I like you.";
+          button.onclick = () => {
+            currentStep = 0;
+            messageDiv.textContent = steps[currentStep++];
+            button.textContent = "OK";
+            button.onclick = showNextStep;
+          };
+        };
+      } else {
+        isRealRuby = true;
+        messageDiv.textContent = steps[currentStep++];
+        button.textContent = "OK";
+        button.onclick = showNextStep;
+      }
+    }
+
+    function showNextStep() {
+      const messageDiv = document.getElementById("message");
+      const button = document.querySelector("button");
+
+      if (currentStep < steps.length - 1) {
+        messageDiv.textContent = steps[currentStep++];
+      } else if (currentStep === steps.length - 1) {
+        messageDiv.textContent = steps[currentStep++];
+        button.style.display = "none";
+
+        const yesBtn = document.createElement("button");
+        yesBtn.textContent = "Yes";
+        yesBtn.onclick = () => {
+          messageDiv.textContent =
+            "LOVE YOU ❤️ My sweitest Ruby😘, I made this for you because I want to remind you how special you are, even when I can’t be right next to you.";
+          yesBtn.remove();
+          noBtn.remove();
+        };
+
+        const noBtn = document.createElement("button");
+        noBtn.textContent = "No";
+        noBtn.onclick = () => {
+          messageDiv.textContent = "Sounds like to me you want it the hard way.";
+          yesBtn.remove();
+          noBtn.remove();
+
+          const nextBtn = document.createElement("button");
+          nextBtn.textContent = "Next";
+          nextBtn.onclick = () => {
+            messageDiv.textContent =
+              "Fine… I’ll just have to love you even harder😘❤️";
+            nextBtn.remove();
+          };
+          document.body.appendChild(nextBtn);
+        };
+
+        document.body.appendChild(yesBtn);
+        document.body.appendChild(noBtn);
+      }
+    }
+  </script>
+</body>
+</html>
